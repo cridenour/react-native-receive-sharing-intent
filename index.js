@@ -59,43 +59,23 @@ export default class ReceiveSharingIntentModule {
 const iosSortedData = (data) => {
     let objects = { filePath: null, text: null, weblink: null, mimeType: null, contentUri: null, fileName: null, extension: null };
     let file = data;
-    if (file.startsWith('text:')) {
-        let text = file.replace("text:", "");
-        if (text.startsWith("http")) {
-            let object = [
-                { ...objects, weblink: text }
-            ];
-            return object;
-        }
-        let object = [
-            { ...objects, text: text }
-        ];
-        return object;
-    } else if (file.startsWith('webUrl:')) {
-        let weblink = file.replace("webUrl:", "");
-        let object = [
-            { ...objects, weblink: weblink }
-        ];
-        return object;
-    } else {
-        try {
-            let files = JSON.parse(file)
-            let object = [];
-            for (let i = 0; i < files.length; i++) {
-                let path = files[i].path;
-                let obj = {
-                    ...objects,
-                    fileName: getFileName(path),
-                    extension: getExtension(path),
-                    mimeType: getMimeType(path),
-                    filePath: path
-                }
-                object.push(obj);
+    try {
+        let files = JSON.parse(file)
+        let object = [];
+        for (let i = 0; i < files.length; i++) {
+            let path = files[i].path;
+            let obj = {
+                ...objects,
+                fileName: getFileName(path),
+                extension: getExtension(path),
+                mimeType: getMimeType(path),
+                filePath: path
             }
-            return object;
-        } catch (error) {
-            return [{ ...objects }];
+            object.push(obj);
         }
+        return object;
+    } catch (error) {
+        return [{ ...objects }];
     }
 }
 
