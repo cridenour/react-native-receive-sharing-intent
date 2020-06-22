@@ -178,7 +178,16 @@ class ReceiveSharingIntent: NSObject {
     
     @objc
     func clearFileNames(){
-        
+        if let sharedKeyPrefix = sharedKey {
+            let appDomain = Bundle.main.bundleIdentifier!
+            let userDefaults = UserDefaults(suiteName: "group.\(appDomain)")
+            
+            userDefaults?.removeObject(forKey: sharedKeyPrefix + "Media")
+            userDefaults?.removeObject(forKey: sharedKeyPrefix + "Files")
+            userDefaults?.removeObject(forKey: sharedKeyPrefix + "Text")
+            userDefaults?.removeObject(forKey: sharedKeyPrefix + "Url")
+            userDefaults?.synchronize()
+        }
     }
       
     @objc
